@@ -7,7 +7,6 @@ COPY src src
 # Build the application
 RUN mvn clean package -DskipTests
 
-
 # Use OpenJDK 8 to run the application
 FROM openjdk:8-jdk-alpine
 WORKDIR /app
