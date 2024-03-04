@@ -1,3 +1,4 @@
+# 配置文件不一定需要为 ”workflows.yml“ 只需为 *.yml 即可
 # 工作流程的名称
 name: Build and Deploy Spring Boot Application
 # 定义触发工作流程的事件
