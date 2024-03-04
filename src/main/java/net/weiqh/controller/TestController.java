@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @GetMapping("/test")
     public String test(){
-        return "测试返回值 -- Test1";
+        return "测试返回值 -- Test1  17:31";
     }
 }
