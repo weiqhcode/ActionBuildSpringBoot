@@ -57,18 +57,30 @@ jobs:
           # 镜像标签
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
-
+  # 作业名称
   deploy-to-server:
+    # 该作业依赖于 'build-and-push-docker-image' 作业的成功完成
     needs: build-and-push-docker-image
+    # 指定运行环境为最新版本的 Ubuntu 虚拟环境
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Docker image to server
+        # 使用 appleboy/ssh-action@master，这是一个允许通过 SSH 连接到服务器并执行命令的 GitHub Action
         uses: appleboy/ssh-action@master
         with:
+          # 服务器的 IP 地址，从 GitHub Secrets 获取
           host: ${{ secrets.SERVER_IP }}
+          # 用于 SSH 登录的用户名，从 GitHub Secrets 获取
           username: ${{ secrets.SERVER_USERNAME }}
+          # 用于 SSH 登录的密码，从 GitHub Secrets 获取
           password: ${{ secrets.SERVER_PASSWORD }}
+          # SSH 连接端口，从 GitHub Secrets 获取
           port: ${{ secrets.SERVER_PORT }}
+          # 脚本内容：
+          # 1. 拉取最新的 Docker 镜像
+          # 2. 停止当前运行的名为 spring 的 Docker 容器，如果不存在则忽略错误
+          # 3. 强制移除名为 spring 的 Docker 容器，如果不存在则忽略错误
+          # 4. 以后台模式运行新的 Docker 容器，映射端口 30229，容器名为 spring
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
             docker stop spring || true
